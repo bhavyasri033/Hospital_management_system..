@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -27,6 +27,66 @@ interface SidebarProps {
 
 export default function AnimatedSidebar({ currentPage, onPageChange, userRole }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const autoCollapseTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Auto-collapse after 3 seconds of inactivity
+  const AUTO_COLLAPSE_DELAY = 3000
+  // Hover delay before expanding
+  const HOVER_EXPAND_DELAY = 300
+
+  useEffect(() => {
+    // Start auto-collapse timer when component mounts
+    startAutoCollapseTimer()
+
+    return () => {
+      clearTimers()
+    }
+  }, [])
+
+  const clearTimers = () => {
+    if (autoCollapseTimerRef.current) {
+      clearTimeout(autoCollapseTimerRef.current)
+    }
+    if (hoverTimerRef.current) {
+      clearTimeout(hoverTimerRef.current)
+    }
+  }
+
+  const startAutoCollapseTimer = () => {
+    clearTimers()
+    autoCollapseTimerRef.current = setTimeout(() => {
+      if (!isHovered) {
+        setIsCollapsed(true)
+      }
+    }, AUTO_COLLAPSE_DELAY)
+  }
+
+  const handleMouseEnter = () => {
+    setIsHovered(true)
+    clearTimers()
+    
+    // Expand after a short delay
+    hoverTimerRef.current = setTimeout(() => {
+      setIsCollapsed(false)
+    }, HOVER_EXPAND_DELAY)
+  }
+
+  const handleMouseLeave = () => {
+    setIsHovered(false)
+    clearTimers()
+    
+    // Collapse after a short delay
+    hoverTimerRef.current = setTimeout(() => {
+      setIsCollapsed(true)
+    }, HOVER_EXPAND_DELAY)
+  }
+
+  const handleManualToggle = () => {
+    setIsCollapsed(!isCollapsed)
+    startAutoCollapseTimer()
+  }
 
   const menuItems = [
     {
@@ -96,9 +156,11 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
   return (
     <div
       className={cn(
-        "bg-white border-r border-gray-200 shadow-lg transition-all duration-300 ease-in-out flex flex-col dark:bg-gray-900 dark:border-gray-700",
+        "bg-white border-r border-gray-200 shadow-lg transition-all duration-300 ease-in-out flex flex-col dark:bg-gray-900 dark:border-gray-700 relative",
         isCollapsed ? "w-16" : "w-64",
       )}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       {/* Header */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-700">
@@ -116,7 +178,7 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
               </div>
             </div>
           )}
-          <Button variant="ghost" size="sm" onClick={() => setIsCollapsed(!isCollapsed)} className="btn-animate p-2">
+          <Button variant="ghost" size="sm" onClick={handleManualToggle} className="btn-animate p-2">
             {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </Button>
         </div>
@@ -148,7 +210,10 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
                 isCollapsed ? "px-2" : "px-4",
               )}
               style={{ animationDelay: `${index * 0.1}s` }}
-              onClick={() => onPageChange(item.id)}
+              onClick={() => {
+                onPageChange(item.id)
+                startAutoCollapseTimer()
+              }}
             >
               <Icon className={cn("h-5 w-5 icon-hover", isCollapsed ? "mx-auto" : "mr-3")} />
               {!isCollapsed && (
