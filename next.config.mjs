@@ -9,6 +9,13 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  trailingSlash: false,
+  async redirects() {
+    return []
+  },
+  async rewrites() {
+    return []
+  }
 }
 
 export default nextConfig
