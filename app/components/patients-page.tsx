@@ -464,12 +464,12 @@ export default function PatientsPage({ userRole = "admin", currentUser }: Patien
 
       {/* Edit Patient Modal */}
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Patient</DialogTitle>
           </DialogHeader>
           {editingPatient && (
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="edit-name">Full Name</Label>
                 <Input
@@ -561,25 +561,27 @@ export default function PatientsPage({ userRole = "admin", currentUser }: Patien
                   </SelectContent>
                 </Select>
               </div>
-              <div className="col-span-2 space-y-2">
+              <div className="col-span-1 sm:col-span-2 space-y-2">
                 <Label htmlFor="edit-address">Address</Label>
                 <Textarea
                   id="edit-address"
                   value={editingPatient.address}
                   onChange={(e) => setEditingPatient({ ...editingPatient, address: e.target.value })}
                   placeholder="Enter address"
+                  rows={3}
                 />
               </div>
-              <div className="col-span-2 space-y-2">
+              <div className="col-span-1 sm:col-span-2 space-y-2">
                 <Label htmlFor="edit-diagnosis">Diagnosis</Label>
                 <Textarea
                   id="edit-diagnosis"
                   value={editingPatient.diagnosis}
                   onChange={(e) => setEditingPatient({ ...editingPatient, diagnosis: e.target.value })}
                   placeholder="Enter diagnosis"
+                  rows={3}
                 />
               </div>
-              <div className="col-span-2 space-y-2">
+              <div className="col-span-1 sm:col-span-2 space-y-2">
                 <Label htmlFor="edit-doctor">Assigned Doctor</Label>
                 <Select
                   value={editingPatient.doctor}
@@ -599,11 +601,11 @@ export default function PatientsPage({ userRole = "admin", currentUser }: Patien
               </div>
             </div>
           )}
-          <div className="flex justify-end space-x-2 mt-6">
-            <Button variant="outline" onClick={() => setIsEditModalOpen(false)}>
+          <div className="flex flex-col sm:flex-row justify-end gap-2 mt-6">
+            <Button variant="outline" onClick={() => setIsEditModalOpen(false)} className="w-full sm:w-auto">
               Cancel
             </Button>
-            <Button onClick={handleUpdatePatient}>Update Patient</Button>
+            <Button onClick={handleUpdatePatient} className="w-full sm:w-auto">Update Patient</Button>
           </div>
         </DialogContent>
       </Dialog>

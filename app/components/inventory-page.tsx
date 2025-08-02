@@ -268,9 +268,9 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
   return (
     <div className="space-y-8">
       {/* Enhanced Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">Inventory Management</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900">Inventory Management</h2>
           <p className="text-muted-foreground mt-2">
             {userRole === "admin"
               ? "Complete inventory oversight and management"
@@ -280,7 +280,7 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
         {userRole === "pharma" && (
           <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
             <DialogTrigger asChild>
-              <AnimatedButton>
+              <AnimatedButton className="w-full sm:w-auto">
                 <Plus className="mr-2 h-4 w-4" />
                 Add Medicine
               </AnimatedButton>
@@ -292,7 +292,7 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                   Add New Medicine to Inventory
                 </DialogTitle>
               </DialogHeader>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2 form-field">
                   <Label htmlFor="name">Medicine Name *</Label>
                   <Input
@@ -404,11 +404,11 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                   />
                 </div>
               </div>
-              <div className="flex justify-end space-x-2 mt-6">
-                <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>
+              <div className="flex flex-col sm:flex-row justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setIsAddModalOpen(false)} className="w-full sm:w-auto">
                   Cancel
                 </Button>
-                <Button onClick={handleAddItem} className="bg-gradient-to-r from-blue-600 to-cyan-600">
+                <Button onClick={handleAddItem} className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-cyan-600">
                   Add to Inventory
                 </Button>
               </div>
@@ -636,13 +636,13 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                               </div>
                             </div>
 
-                            <div className="flex space-x-2 mt-4">
+                            <div className="flex flex-col sm:flex-row gap-2 mt-4">
                               <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
                                 <DialogTrigger asChild>
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    className="flex-1 border-gray-300 hover:bg-gray-50 bg-transparent"
+                                    className="w-full sm:flex-1 border-gray-300 hover:bg-gray-50 bg-transparent"
                                     onClick={() => setSelectedItem(item)}
                                   >
                                     <Eye className="mr-2 h-4 w-4" />
@@ -837,13 +837,13 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                       </div>
                     </div>
 
-                    <div className="flex space-x-2 mt-4">
+                    <div className="flex flex-col sm:flex-row gap-2 mt-4">
                       <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
                         <DialogTrigger asChild>
                           <Button
                             variant="outline"
                             size="sm"
-                            className="flex-1 border-gray-300 hover:bg-gray-50 bg-transparent"
+                            className="w-full sm:flex-1 border-gray-300 hover:bg-gray-50 bg-transparent"
                             onClick={() => setSelectedItem(item)}
                           >
                             <Eye className="mr-2 h-4 w-4" />
