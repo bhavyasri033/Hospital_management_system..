@@ -445,16 +445,16 @@ export default function PharmaDashboard({ user, onLogout }: PharmaDashboardProps
       </div>
 
       {/* Medicine Categories Distribution Chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
           <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50 border-b dark:from-indigo-900/20 dark:to-purple-900/20 dark:border-gray-700">
-            <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-white">
+            <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-white text-base sm:text-lg">
               <Package className="h-5 w-5 text-indigo-600" />
               Medicine Categories Distribution
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-6">
-            <div className="h-[300px]">
+          <CardContent className="pt-4 sm:pt-6">
+            <div className="w-full h-[300px] sm:h-[350px] flex items-center justify-center">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -462,8 +462,12 @@ export default function PharmaDashboard({ user, onLogout }: PharmaDashboardProps
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
+                    label={({ name, percent }: { name?: string; percent?: number }) => {
+                      const percentage = ((percent || 0) * 100).toFixed(0)
+                      return `${percentage}%`
+                    }}
                     outerRadius={80}
+                    innerRadius={40}
                     fill="#8884d8"
                     dataKey="value"
                   >
@@ -482,10 +486,13 @@ export default function PharmaDashboard({ user, onLogout }: PharmaDashboardProps
                   />
                   <Legend 
                     verticalAlign="bottom" 
-                    height={36}
+                    height={60}
                     wrapperStyle={{
-                      paddingTop: '20px'
+                      paddingTop: '10px',
+                      fontSize: '12px'
                     }}
+                    layout="horizontal"
+                    align="center"
                   />
                 </PieChart>
               </ResponsiveContainer>

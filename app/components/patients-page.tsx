@@ -154,11 +154,11 @@ export default function PatientsPage({ userRole = "admin", currentUser }: Patien
                 Add Patient
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>Add New Patient</DialogTitle>
               </DialogHeader>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name</Label>
                   <Input
@@ -234,25 +234,27 @@ export default function PatientsPage({ userRole = "admin", currentUser }: Patien
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="col-span-2 space-y-2">
+                <div className="col-span-1 sm:col-span-2 space-y-2">
                   <Label htmlFor="address">Address</Label>
                   <Textarea
                     id="address"
                     value={newPatient.address}
                     onChange={(e) => setNewPatient({ ...newPatient, address: e.target.value })}
                     placeholder="Enter address"
+                    rows={3}
                   />
                 </div>
-                <div className="col-span-2 space-y-2">
+                <div className="col-span-1 sm:col-span-2 space-y-2">
                   <Label htmlFor="diagnosis">Diagnosis</Label>
                   <Textarea
                     id="diagnosis"
                     value={newPatient.diagnosis}
                     onChange={(e) => setNewPatient({ ...newPatient, diagnosis: e.target.value })}
                     placeholder="Enter diagnosis"
+                    rows={3}
                   />
                 </div>
-                <div className="col-span-2 space-y-2">
+                <div className="col-span-1 sm:col-span-2 space-y-2">
                   <Label htmlFor="doctor">Assigned Doctor</Label>
                   <Select
                     value={newPatient.doctor}
@@ -271,11 +273,11 @@ export default function PatientsPage({ userRole = "admin", currentUser }: Patien
                   </Select>
                 </div>
               </div>
-              <div className="flex justify-end space-x-2 mt-6">
-                <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>
+              <div className="flex flex-col sm:flex-row justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setIsAddModalOpen(false)} className="w-full sm:w-auto">
                   Cancel
                 </Button>
-                <Button onClick={handleAddPatient}>Add Patient</Button>
+                <Button onClick={handleAddPatient} className="w-full sm:w-auto">Add Patient</Button>
               </div>
             </DialogContent>
           </Dialog>
@@ -355,24 +357,24 @@ export default function PatientsPage({ userRole = "admin", currentUser }: Patien
                       View
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl">
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                     <DialogHeader>
                       <DialogTitle>Patient Details</DialogTitle>
                     </DialogHeader>
                     {selectedPatient && (
                       <div className="space-y-6">
-                        <div className="flex items-center space-x-4">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
                           <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
                             <User className="h-8 w-8 text-blue-600" />
                           </div>
                           <div>
-                            <h3 className="text-2xl font-bold dark:text-white">{selectedPatient.name}</h3>
+                            <h3 className="text-xl sm:text-2xl font-bold dark:text-white">{selectedPatient.name}</h3>
                             <p className="text-gray-600 dark:text-gray-400">Patient ID: {selectedPatient.patientId}</p>
                             <Badge className={getStatusColor(selectedPatient.status)}>{selectedPatient.status}</Badge>
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                           <div className="space-y-4">
                             <h4 className="font-semibold text-lg dark:text-white">Personal Information</h4>
                             <div className="space-y-2">
@@ -412,7 +414,7 @@ export default function PatientsPage({ userRole = "admin", currentUser }: Patien
 
                         <div className="space-y-4">
                           <h4 className="font-semibold text-lg dark:text-white">Medical Information</h4>
-                          <div className="grid grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                               <label className="text-sm font-medium text-gray-500 dark:text-gray-400">Assigned Doctor</label>
                               <p className="dark:text-white">{selectedPatient.doctor}</p>

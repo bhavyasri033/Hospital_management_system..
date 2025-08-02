@@ -173,7 +173,7 @@ export default function DoctorsPage() {
                 <DialogTitle className="dark:text-white">Add New Doctor</DialogTitle>
               </DialogHeader>
               <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
                     <Input
@@ -203,7 +203,7 @@ export default function DoctorsPage() {
                     </Select>
                   </div>
                   {newDoctor.department === "other" && (
-                    <div className="space-y-2">
+                    <div className="col-span-1 sm:col-span-2 space-y-2">
                       <Label htmlFor="customDepartment">Custom Department Name</Label>
                       <Input
                         id="customDepartment"
@@ -256,57 +256,51 @@ export default function DoctorsPage() {
                 <div className="space-y-4">
                   <Label>Weekly Availability</Label>
                   <div className="border rounded-lg p-4">
-                    <div className="grid grid-cols-8 gap-2 text-sm">
-                      <div className="font-medium">Day</div>
-                      <div className="font-medium text-center">Morning</div>
-                      <div className="font-medium text-center">Afternoon</div>
-                      <div className="font-medium text-center">Evening</div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
-
+                    {/* Mobile-friendly availability layout */}
+                    <div className="space-y-3">
                       {days.map((day) => (
-                        <div key={day} className="contents">
-                          <div className="capitalize py-2">{day}</div>
-                          {timeSlots.map((slot) => (
-                            <div key={slot} className="flex justify-center py-2">
-                              <Checkbox
-                                checked={
-                                  newDoctor.availability[day as keyof typeof newDoctor.availability][slot as keyof (typeof newDoctor.availability)[keyof typeof newDoctor.availability]]
-                                }
-                                onCheckedChange={(checked) => {
-                                  setNewDoctor({
-                                    ...newDoctor,
-                                    availability: {
-                                      ...newDoctor.availability,
-                                      [day]: {
-                                        ...newDoctor.availability[day as keyof typeof newDoctor.availability],
-                                        [slot]: checked,
+                        <div key={day} className="border-b border-gray-200 pb-3 last:border-b-0">
+                          <div className="font-medium capitalize mb-2 text-sm">{day}</div>
+                          <div className="grid grid-cols-3 gap-3">
+                            {timeSlots.map((slot) => (
+                              <div key={slot} className="flex items-center space-x-2">
+                                <Checkbox
+                                  id={`${day}-${slot}`}
+                                  checked={
+                                    newDoctor.availability[day as keyof typeof newDoctor.availability][slot as keyof (typeof newDoctor.availability)[keyof typeof newDoctor.availability]]
+                                  }
+                                  onCheckedChange={(checked) => {
+                                    setNewDoctor({
+                                      ...newDoctor,
+                                      availability: {
+                                        ...newDoctor.availability,
+                                        [day]: {
+                                          ...newDoctor.availability[day as keyof typeof newDoctor.availability],
+                                          [slot]: checked,
+                                        },
                                       },
-                                    },
-                                  })
-                                }}
-                              />
-                            </div>
-                          ))}
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                          <div></div>
+                                    })
+                                  }}
+                                />
+                                <Label htmlFor={`${day}-${slot}`} className="text-xs capitalize cursor-pointer">
+                                  {slot}
+                                </Label>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       ))}
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="flex justify-end space-x-2 mt-6">
-                <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>
+              <div className="flex flex-col sm:flex-row justify-end gap-2 mt-6">
+                <Button variant="outline" onClick={() => setIsAddModalOpen(false)} className="w-full sm:w-auto">
                   Cancel
                 </Button>
-                <Button onClick={handleAddDoctor}>Add Doctor</Button>
-                          </div>
-          </DialogContent>
+                <Button onClick={handleAddDoctor} className="w-full sm:w-auto">Add Doctor</Button>
+              </div>
+            </DialogContent>
         </Dialog>
 
         {/* Edit Doctor Modal */}
@@ -404,42 +398,36 @@ export default function DoctorsPage() {
                 <div className="space-y-4">
                   <Label>Weekly Availability</Label>
                   <div className="border rounded-lg p-4">
-                    <div className="grid grid-cols-8 gap-2 text-sm">
-                      <div className="font-medium">Day</div>
-                      <div className="font-medium text-center">Morning</div>
-                      <div className="font-medium text-center">Afternoon</div>
-                      <div className="font-medium text-center">Evening</div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
-                      <div></div>
-
+                    {/* Mobile-friendly availability layout */}
+                    <div className="space-y-3">
                       {days.map((day) => (
-                        <div key={day} className="contents">
-                          <div className="capitalize py-2">{day}</div>
-                          {timeSlots.map((slot) => (
-                            <div key={slot} className="flex justify-center py-2">
-                              <Checkbox
-                                checked={editingDoctor.availability[day as keyof typeof editingDoctor.availability][slot as keyof (typeof editingDoctor.availability)[keyof typeof editingDoctor.availability]]}
-                                onCheckedChange={(checked) => {
-                                  setEditingDoctor({
-                                    ...editingDoctor,
-                                    availability: {
-                                      ...editingDoctor.availability,
-                                      [day]: {
-                                        ...editingDoctor.availability[day as keyof typeof editingDoctor.availability],
-                                        [slot]: checked,
+                        <div key={day} className="border-b border-gray-200 pb-3 last:border-b-0">
+                          <div className="font-medium capitalize mb-2 text-sm">{day}</div>
+                          <div className="grid grid-cols-3 gap-3">
+                            {timeSlots.map((slot) => (
+                              <div key={slot} className="flex items-center space-x-2">
+                                <Checkbox
+                                  id={`${day}-${slot}`}
+                                  checked={editingDoctor.availability[day as keyof typeof editingDoctor.availability][slot as keyof (typeof editingDoctor.availability)[keyof typeof editingDoctor.availability]]}
+                                  onCheckedChange={(checked) => {
+                                    setEditingDoctor({
+                                      ...editingDoctor,
+                                      availability: {
+                                        ...editingDoctor.availability,
+                                        [day]: {
+                                          ...editingDoctor.availability[day as keyof typeof editingDoctor.availability],
+                                          [slot]: checked,
+                                        },
                                       },
-                                    },
-                                  })
-                                }}
-                              />
-                            </div>
-                          ))}
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                          <div></div>
+                                    })
+                                  }}
+                                />
+                                <Label htmlFor={`${day}-${slot}`} className="text-xs capitalize cursor-pointer">
+                                  {slot}
+                                </Label>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       ))}
                     </div>

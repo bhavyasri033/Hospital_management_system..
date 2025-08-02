@@ -566,7 +566,7 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                           style={{ animationDelay: `${index * 0.1}s` }}
                         >
                           <CardHeader>
-                            <div className="flex items-center justify-between">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                               <div className="flex items-center space-x-3">
                                 <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center dark:from-blue-900/20 dark:to-cyan-900/20">
                                   {getStatusIcon(item.status)}
@@ -576,7 +576,7 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                                   <CardDescription className="text-gray-600 dark:text-gray-400">{item.category}</CardDescription>
                                 </div>
                               </div>
-                              <Badge className={`${getStatusColor(item.status)} border font-medium`}>
+                              <Badge className={`${getStatusColor(item.status)} border font-medium w-fit`}>
                                 {item.status.replace("-", " ")}
                               </Badge>
                             </div>
@@ -649,7 +649,7 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                                     View Details
                                   </Button>
                                 </DialogTrigger>
-                                <DialogContent className="max-w-2xl">
+                                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                                   <DialogHeader>
                                     <DialogTitle className="flex items-center gap-2">
                                       <Package className="h-5 w-5 text-blue-600" />
@@ -658,14 +658,14 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                                   </DialogHeader>
                                   {selectedItem && (
                                     <div className="space-y-6">
-                                      <div className="flex items-center space-x-4">
+                                      <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
                                         <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center">
                                           {getStatusIcon(selectedItem.status)}
                                         </div>
                                         <div>
-                                          <h3 className="text-2xl font-bold text-gray-900">{selectedItem.name}</h3>
+                                          <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{selectedItem.name}</h3>
                                           <p className="text-gray-600">Category: {selectedItem.category}</p>
-                                          <Badge className={`${getStatusColor(selectedItem.status)} border font-medium mt-2`}>
+                                          <Badge className={`${getStatusColor(selectedItem.status)} border font-medium mt-2 w-fit`}>
                                             {selectedItem.status.replace("-", " ")}
                                           </Badge>
                                         </div>
@@ -743,7 +743,7 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                               <Button
                                   variant="default"
                                 size="sm"
-                                className="flex-1 bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold shadow hover:from-blue-500 hover:to-green-400"
+                                className="w-full sm:flex-1 bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold shadow hover:from-blue-500 hover:to-green-400"
                                 onClick={() => alert(`Restock action for ${item.name}`)}
                               >
                                 Restock
@@ -767,7 +767,7 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <CardHeader>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                       <div className="flex items-center space-x-3">
                         <div className="w-12 h-12 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center dark:from-blue-900/20 dark:to-cyan-900/20">
                           {getStatusIcon(item.status)}
@@ -777,7 +777,7 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                           <CardDescription className="text-gray-600 dark:text-gray-400">{item.category}</CardDescription>
                         </div>
                       </div>
-                      <Badge className={`${getStatusColor(item.status)} border font-medium`}>
+                      <Badge className={`${getStatusColor(item.status)} border font-medium w-fit`}>
                         {item.status.replace("-", " ")}
                       </Badge>
                     </div>
@@ -850,7 +850,7 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                             View Details
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-2xl">
+                        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
                           <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                               <Package className="h-5 w-5 text-blue-600" />
@@ -859,14 +859,14 @@ export default function InventoryPage({ userRole }: InventoryPageProps) {
                           </DialogHeader>
                           {selectedItem && (
                             <div className="space-y-6">
-                              <div className="flex items-center space-x-4">
+                              <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
                                 <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-cyan-100 rounded-xl flex items-center justify-center">
                                   {getStatusIcon(selectedItem.status)}
                                 </div>
                                 <div>
-                                  <h3 className="text-2xl font-bold text-gray-900">{selectedItem.name}</h3>
+                                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{selectedItem.name}</h3>
                                   <p className="text-gray-600">Category: {selectedItem.category}</p>
-                                  <Badge className={`${getStatusColor(selectedItem.status)} border font-medium mt-2`}>
+                                  <Badge className={`${getStatusColor(selectedItem.status)} border font-medium mt-2 w-fit`}>
                                     {selectedItem.status.replace("-", " ")}
                                   </Badge>
                                 </div>

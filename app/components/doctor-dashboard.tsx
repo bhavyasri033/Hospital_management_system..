@@ -413,33 +413,35 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
-            <ChartContainer
-              config={{
-                satisfaction: { label: "Satisfaction", color: "#10b981" },
-              }}
-              className="h-[250px] sm:h-[300px]"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={satisfactionData}>
-                  <defs>
-                    <linearGradient id="colorSatisfaction" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0.1} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="month" />
-                  <YAxis domain={[0, 5]} />
-                  <Area
-                    type="monotone"
-                    dataKey="satisfaction"
-                    stroke="#10b981"
-                    fillOpacity={1}
-                    fill="url(#colorSatisfaction)"
-                  />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                </AreaChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+            <div className="w-full h-[250px] sm:h-[300px] flex items-center justify-center">
+              <ChartContainer
+                config={{
+                  satisfaction: { label: "Satisfaction", color: "#10b981" },
+                }}
+                className="w-full h-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={satisfactionData}>
+                    <defs>
+                      <linearGradient id="colorSatisfaction" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                        <stop offset="95%" stopColor="#10b981" stopOpacity={0.1} />
+                      </linearGradient>
+                    </defs>
+                    <XAxis dataKey="month" />
+                    <YAxis domain={[0, 5]} />
+                    <Area
+                      type="monotone"
+                      dataKey="satisfaction"
+                      stroke="#10b981"
+                      fillOpacity={1}
+                      fill="url(#colorSatisfaction)"
+                    />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
           </CardContent>
         </Card>
 
@@ -452,33 +454,35 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
-            <ChartContainer
-              config={{
-                consultation: { label: "Consultation", color: "#3b82f6" },
-                followup: { label: "Follow-up", color: "#10b981" },
-                checkup: { label: "Check-up", color: "#f59e0b" },
-                emergency: { label: "Emergency", color: "#ef4444" },
-              }}
-              className="h-[250px] sm:h-[300px]"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={appointmentTypesData}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={60}
-                    dataKey="value"
-                    label={({ name, percent }: { name?: string; percent?: number }) => `${name || ''} ${((percent ?? 0) * 100).toFixed(0)}%`}
-                  >
-                    {appointmentTypesData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                </PieChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+            <div className="w-full h-[250px] sm:h-[300px] flex items-center justify-center">
+              <ChartContainer
+                config={{
+                  consultation: { label: "Consultation", color: "#3b82f6" },
+                  followup: { label: "Follow-up", color: "#10b981" },
+                  checkup: { label: "Check-up", color: "#f59e0b" },
+                  emergency: { label: "Emergency", color: "#ef4444" },
+                }}
+                className="w-full h-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={appointmentTypesData}
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={60}
+                      dataKey="value"
+                      label={({ name, percent }: { name?: string; percent?: number }) => `${name || ''} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                    >
+                      {appointmentTypesData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
           </CardContent>
         </Card>
       </div>

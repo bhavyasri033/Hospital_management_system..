@@ -495,73 +495,77 @@ export default function BedManagementPage() {
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {/* Bed Status Distribution */}
         <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 border-b dark:from-blue-900/20 dark:to-cyan-900/20 dark:border-gray-700">
-            <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-white">
+            <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-white text-base sm:text-lg">
               <Bed className="h-5 w-5 text-blue-600 dark:text-blue-400" />
               Bed Status Distribution
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-6">
-            <ChartContainer
-              config={{
-                occupied: { label: "Occupied", color: "#ef4444" },
-                available: { label: "Available", color: "#22c55e" },
-                maintenance: { label: "Maintenance", color: "#f59e0b" },
-                cleaning: { label: "Cleaning", color: "#3b82f6" },
-              }}
-              className="h-[250px] chart-container"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={statusDistribution}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    dataKey="value"
-                    label={({ name, percent = 0 }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  >
-                    {statusDistribution.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                </PieChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+          <CardContent className="pt-4 sm:pt-6">
+            <div className="w-full h-[250px] sm:h-[280px] flex items-center justify-center">
+              <ChartContainer
+                config={{
+                  occupied: { label: "Occupied", color: "#ef4444" },
+                  available: { label: "Available", color: "#22c55e" },
+                  maintenance: { label: "Maintenance", color: "#f59e0b" },
+                  cleaning: { label: "Cleaning", color: "#3b82f6" },
+                }}
+                className="w-full h-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={statusDistribution}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={40}
+                      outerRadius={70}
+                      dataKey="value"
+                      label={({ name, percent = 0 }: { name?: string; percent?: number }) => `${name || ''} ${(percent * 100).toFixed(0)}%`}
+                    >
+                      {statusDistribution.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
           </CardContent>
         </Card>
 
         {/* Ward Distribution */}
         <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
           <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b dark:from-green-900/20 dark:to-emerald-900/20 dark:border-gray-700">
-            <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-white">
+            <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-white text-base sm:text-lg">
               <MapPin className="h-5 w-5 text-green-600 dark:text-green-400" />
               Ward Occupancy
             </CardTitle>
           </CardHeader>
-          <CardContent className="pt-6">
-            <ChartContainer
-              config={{
-                occupied: { label: "Occupied", color: "#ef4444" },
-                available: { label: "Available", color: "#22c55e" },
-              }}
-              className="h-[250px] chart-container"
-            >
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={wardDistribution}>
-                  <XAxis dataKey="ward" />
-                  <YAxis />
-                  <Bar dataKey="occupied" fill="#ef4444" name="Occupied" />
-                  <Bar dataKey="available" fill="#22c55e" name="Available" />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartContainer>
+          <CardContent className="pt-4 sm:pt-6">
+            <div className="w-full h-[250px] sm:h-[280px] flex items-center justify-center">
+              <ChartContainer
+                config={{
+                  occupied: { label: "Occupied", color: "#ef4444" },
+                  available: { label: "Available", color: "#22c55e" },
+                }}
+                className="w-full h-full"
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={wardDistribution}>
+                    <XAxis dataKey="ward" />
+                    <YAxis />
+                    <Bar dataKey="occupied" fill="#ef4444" name="Occupied" />
+                    <Bar dataKey="available" fill="#22c55e" name="Available" />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </ChartContainer>
+            </div>
           </CardContent>
         </Card>
       </div>

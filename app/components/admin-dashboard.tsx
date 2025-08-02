@@ -220,9 +220,9 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
   }
 
   const renderDashboard = () => (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* Enhanced Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {summaryData.map((item, index) => (
           <AnimatedCard
             key={index}
@@ -237,7 +237,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         {/* Enhanced Activity Feed */}
         <Card className="lg:col-span-1 border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 border-b dark:from-blue-900/20 dark:to-cyan-900/20 dark:border-gray-700">
@@ -267,8 +267,8 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                         />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium text-gray-900 dark:text-white">{activity.message}</p>
-                        <p className="text-sm text-gray-500 mt-1 dark:text-gray-400">{activity.time}</p>
+                        <p className="font-medium text-gray-900 dark:text-white text-sm sm:text-base">{activity.message}</p>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-1 dark:text-gray-400">{activity.time}</p>
                       </div>
                     </div>
                     <Button
@@ -296,114 +296,120 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
         </Card>
 
         {/* Enhanced Charts */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
               <CardHeader className="bg-gradient-to-r from-red-50 to-pink-50 border-b dark:from-red-900/20 dark:to-pink-900/20 dark:border-gray-700">
-                <CardTitle className="text-gray-800 dark:text-white">Bed Occupancy</CardTitle>
+                <CardTitle className="text-gray-800 dark:text-white text-base sm:text-lg">Bed Occupancy</CardTitle>
               </CardHeader>
-              <CardContent className="pt-6">
-                <ChartContainer
-                  config={{
-                    occupied: { label: "Occupied", color: "#ef4444" },
-                    available: { label: "Available", color: "#22c55e" },
-                  }}
-                  className="h-[200px] chart-container"
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={bedOccupancyData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
-                        dataKey="value"
-                        label={({ name, percent = 0 }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                      >
-                        {bedOccupancyData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
+              <CardContent className="pt-4 sm:pt-6">
+                <div className="w-full h-[200px] sm:h-[220px] flex items-center justify-center">
+                  <ChartContainer
+                    config={{
+                      occupied: { label: "Occupied", color: "#ef4444" },
+                      available: { label: "Available", color: "#22c55e" },
+                    }}
+                    className="w-full h-full"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={bedOccupancyData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={30}
+                          outerRadius={50}
+                          dataKey="value"
+                          label={({ name, percent = 0 }: { name?: string; percent?: number }) => `${name || ''} ${(percent * 100).toFixed(0)}%`}
+                        >
+                          {bedOccupancyData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                </div>
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b">
-                <CardTitle className="text-gray-800">Revenue Trend</CardTitle>
+            <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
+              <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b dark:from-green-900/20 dark:to-emerald-900/20 dark:border-gray-700">
+                <CardTitle className="text-gray-800 dark:text-white text-base sm:text-lg">Revenue Trend</CardTitle>
               </CardHeader>
-              <CardContent className="pt-6">
-                <ChartContainer
-                  config={{
-                    revenue: { label: "Revenue", color: "#10b981" },
-                  }}
-                  className="h-[200px] chart-container"
-                >
-                  <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={revenueData}>
-                      <defs>
-                        <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0.1} />
-                        </linearGradient>
-                      </defs>
-                      <XAxis dataKey="month" />
-                      <YAxis />
-                      <Area
-                        type="monotone"
-                        dataKey="revenue"
-                        stroke="#10b981"
-                        fillOpacity={1}
-                        fill="url(#colorRevenue)"
-                      />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                    </AreaChart>
-                  </ResponsiveContainer>
-                </ChartContainer>
+              <CardContent className="pt-4 sm:pt-6">
+                <div className="w-full h-[200px] sm:h-[220px] flex items-center justify-center">
+                  <ChartContainer
+                    config={{
+                      revenue: { label: "Revenue", color: "#10b981" },
+                    }}
+                    className="w-full h-full"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={revenueData}>
+                        <defs>
+                          <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.8} />
+                            <stop offset="95%" stopColor="#10b981" stopOpacity={0.1} />
+                          </linearGradient>
+                        </defs>
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Area
+                          type="monotone"
+                          dataKey="revenue"
+                          stroke="#10b981"
+                          fillOpacity={1}
+                          fill="url(#colorRevenue)"
+                        />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                </div>
               </CardContent>
             </Card>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {/* Enhanced Appointments Table */}
         <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
           <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b dark:from-purple-900/20 dark:to-indigo-900/20 dark:border-gray-700">
             <CardTitle className="text-gray-800 dark:text-white">Today's Appointments</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-50 dark:bg-gray-700">
-                  <TableHead className="font-semibold dark:text-gray-300">Patient</TableHead>
-                  <TableHead className="font-semibold dark:text-gray-300">Doctor</TableHead>
-                  <TableHead className="font-semibold dark:text-gray-300">Time</TableHead>
-                  <TableHead className="font-semibold dark:text-gray-300">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {upcomingAppointments.map((appointment) => (
-                  <TableRow key={appointment.id} className="table-row dark:hover:bg-gray-700">
-                    <TableCell>
-                      <div>
-                        <div className="font-medium text-gray-900 dark:text-white">{appointment.patient}</div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">{appointment.department}</div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-gray-700 dark:text-gray-300">{appointment.doctor}</TableCell>
-                    <TableCell className="font-medium text-gray-900 dark:text-white">{appointment.time}</TableCell>
-                    <TableCell>
-                      <Badge className={`${getStatusColor(appointment.status)} border`}>{appointment.status}</Badge>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50 dark:bg-gray-700">
+                    <TableHead className="font-semibold dark:text-gray-300 text-xs sm:text-sm">Patient</TableHead>
+                    <TableHead className="font-semibold dark:text-gray-300 text-xs sm:text-sm">Doctor</TableHead>
+                    <TableHead className="font-semibold dark:text-gray-300 text-xs sm:text-sm">Time</TableHead>
+                    <TableHead className="font-semibold dark:text-gray-300 text-xs sm:text-sm">Status</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {upcomingAppointments.map((appointment) => (
+                    <TableRow key={appointment.id} className="table-row dark:hover:bg-gray-700">
+                      <TableCell>
+                        <div>
+                          <div className="font-medium text-gray-900 dark:text-white text-xs sm:text-sm">{appointment.patient}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{appointment.department}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-gray-700 dark:text-gray-300 text-xs sm:text-sm">{appointment.doctor}</TableCell>
+                      <TableCell className="font-medium text-gray-900 dark:text-white text-xs sm:text-sm">{appointment.time}</TableCell>
+                      <TableCell>
+                        <Badge className={`${getStatusColor(appointment.status)} border text-xs`}>{appointment.status}</Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 
@@ -413,41 +419,43 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
             <CardTitle className="text-gray-800 dark:text-white">Ward Occupancy Status</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-50 dark:bg-gray-700">
-                  <TableHead className="font-semibold dark:text-gray-300">Ward</TableHead>
-                  <TableHead className="font-semibold dark:text-gray-300">Occupancy</TableHead>
-                  <TableHead className="font-semibold dark:text-gray-300">Available</TableHead>
-                  <TableHead className="font-semibold dark:text-gray-300">Rate</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {wardsData.map((ward, index) => (
-                  <TableRow key={index} className="hover:bg-gray-50 transition-colors dark:hover:bg-gray-700">
-                    <TableCell className="font-medium text-gray-900 dark:text-white">{ward.ward}</TableCell>
-                    <TableCell>
-                      <span className="text-red-600 font-medium dark:text-red-400">{ward.occupied}</span>
-                      <span className="text-gray-400 dark:text-gray-500">/{ward.totalBeds}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-green-600 font-medium dark:text-green-400">{ward.available}</span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-12 bg-gray-200 rounded-full h-2 dark:bg-gray-600">
-                          <div
-                            className={`h-2 rounded-full ${ward.occupancy > 85 ? "bg-red-500" : ward.occupancy > 70 ? "bg-yellow-500" : "bg-green-500"}`}
-                            style={{ width: `${ward.occupancy}%` }}
-                          ></div>
-                        </div>
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{ward.occupancy}%</span>
-                      </div>
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50 dark:bg-gray-700">
+                    <TableHead className="font-semibold dark:text-gray-300 text-xs sm:text-sm">Ward</TableHead>
+                    <TableHead className="font-semibold dark:text-gray-300 text-xs sm:text-sm">Occupancy</TableHead>
+                    <TableHead className="font-semibold dark:text-gray-300 text-xs sm:text-sm">Available</TableHead>
+                    <TableHead className="font-semibold dark:text-gray-300 text-xs sm:text-sm">Rate</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {wardsData.map((ward, index) => (
+                    <TableRow key={index} className="hover:bg-gray-50 transition-colors dark:hover:bg-gray-700">
+                      <TableCell className="font-medium text-gray-900 dark:text-white text-xs sm:text-sm">{ward.ward}</TableCell>
+                      <TableCell>
+                        <span className="text-red-600 font-medium dark:text-red-400 text-xs sm:text-sm">{ward.occupied}</span>
+                        <span className="text-gray-400 dark:text-gray-500 text-xs sm:text-sm">/{ward.totalBeds}</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-green-600 font-medium dark:text-green-400 text-xs sm:text-sm">{ward.available}</span>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-12 bg-gray-200 rounded-full h-2 dark:bg-gray-600">
+                            <div
+                              className={`h-2 rounded-full ${ward.occupancy > 85 ? "bg-red-500" : ward.occupancy > 70 ? "bg-yellow-500" : "bg-green-500"}`}
+                              style={{ width: `${ward.occupancy}%` }}
+                            ></div>
+                          </div>
+                          <span className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">{ward.occupancy}%</span>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -459,7 +467,7 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
       <AnimatedSidebar currentPage={currentPage} onPageChange={setCurrentPage} userRole="admin" />
       <div className="flex-1 flex flex-col overflow-hidden">
         <AnimatedTopNavbar user={user} onLogout={onLogout} />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6 page-enter dark:bg-gray-900">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6 page-enter dark:bg-gray-900">
           {currentPage === "dashboard" && renderDashboard()}
           {currentPage === "patients" && <PatientsPage />}
           {currentPage === "doctors" && <DoctorsPage />}

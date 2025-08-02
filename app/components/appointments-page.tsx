@@ -607,9 +607,9 @@ export default function AppointmentsPage({ userRole, currentUser }: Appointments
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight dark:text-white">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight dark:text-white">
             {userRole === "doctor" ? "My Appointments" : "Appointments"}
           </h2>
           <p className="text-muted-foreground dark:text-gray-400">
@@ -622,7 +622,7 @@ export default function AppointmentsPage({ userRole, currentUser }: Appointments
         {userRole === "admin" && (
           <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
             <DialogTrigger asChild>
-              <Button>
+              <Button className="w-full sm:w-auto">
                 <Plus className="mr-2 h-4 w-4" />
                 Schedule Appointment
               </Button>
@@ -744,8 +744,8 @@ export default function AppointmentsPage({ userRole, currentUser }: Appointments
       </div>
 
       {/* Filters */}
-      <div className="flex items-center space-x-4">
-        <div className="relative flex-1 max-w-sm">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:space-x-4">
+        <div className="relative flex-1 w-full sm:max-w-sm">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 h-4 w-4" />
           <Input
             placeholder="Search appointments..."
@@ -756,7 +756,7 @@ export default function AppointmentsPage({ userRole, currentUser }: Appointments
         </div>
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" className={cn("w-[240px] justify-start text-left font-normal dark:bg-gray-700 dark:border-gray-600 dark:text-white", !dateFilter && "text-muted-foreground dark:text-gray-400")}>
+            <Button variant="outline" className={cn("w-full sm:w-[240px] justify-start text-left font-normal dark:bg-gray-700 dark:border-gray-600 dark:text-white", !dateFilter && "text-muted-foreground dark:text-gray-400")}>
               <CalendarIcon className="mr-2 h-4 w-4" />
               {dateFilter ? format(dateFilter, "PPP") : <span>Pick a date</span>}
             </Button>
@@ -771,7 +771,7 @@ export default function AppointmentsPage({ userRole, currentUser }: Appointments
           </PopoverContent>
         </Popover>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[180px] dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+          <SelectTrigger className="w-full sm:w-[180px] dark:bg-gray-700 dark:border-gray-600 dark:text-white">
             <Filter className="mr-2 h-4 w-4" />
             <SelectValue placeholder="Filter by status" />
           </SelectTrigger>
@@ -787,11 +787,11 @@ export default function AppointmentsPage({ userRole, currentUser }: Appointments
       </div>
 
       {/* Appointment Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {filteredAppointments.map((appointment) => (
           <Card key={appointment.id} className="hover:shadow-lg transition-shadow dark:bg-gray-800 dark:border-gray-700">
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
                   <CardTitle className="text-lg dark:text-white">{appointment.patientName}</CardTitle>
                   <CardDescription className="dark:text-gray-400">ID: {appointment.appointmentId}</CardDescription>

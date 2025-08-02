@@ -185,32 +185,35 @@ const ReportsPage: React.FC = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="mb-6 flex flex-wrap gap-4 items-end bg-gray-50 dark:bg-gray-700 p-4 rounded-xl border border-gray-100 dark:border-gray-600">
-            <div className="flex gap-2 items-end">
-              <div>
+          <div className="mb-6 flex flex-col sm:flex-row flex-wrap gap-4 items-start sm:items-end bg-gray-50 dark:bg-gray-700 p-4 rounded-xl border border-gray-100 dark:border-gray-600">
+            <div className="flex flex-col sm:flex-row gap-2 items-start sm:items-end w-full sm:w-auto">
+              <div className="w-full sm:w-auto">
                 <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">From</label>
                 <input
                   type="date"
-                  className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-400 text-sm transition-all dark:bg-gray-700 dark:text-white"
+                  className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-400 text-sm transition-all dark:bg-gray-700 dark:text-white w-full sm:w-auto"
                   value={dateFilter.from}
                   onChange={e => setDateFilter(f => ({ ...f, from: e.target.value }))}
                 />
               </div>
-              <div>
+              <div className="w-full sm:w-auto">
                 <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">To</label>
                 <input
                   type="date"
-                  className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-400 text-sm transition-all dark:bg-gray-700 dark:text-white"
+                  className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-400 text-sm transition-all dark:bg-gray-700 dark:text-white w-full sm:w-auto"
                   value={dateFilter.to}
                   onChange={e => setDateFilter(f => ({ ...f, to: e.target.value }))}
                 />
               </div>
             </div>
-            <Button variant="ghost" onClick={() => setDateFilter({ from: "", to: "" })} className="rounded-lg px-4 py-2 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all dark:text-gray-300">Clear</Button>
-            <div className="flex-1" />
-            <Button onClick={addRow} variant="outline" className="rounded-lg px-4 py-2 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all dark:text-gray-300">Add Row</Button>
-            <Button onClick={exportCSV} variant="secondary" className="rounded-lg px-4 py-2 border border-blue-200 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:text-blue-900 dark:hover:text-blue-300 transition-all">Export to CSV</Button>
-            <Button onClick={exportPDF} variant="secondary" className="rounded-lg px-4 py-2 border border-purple-200 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/50 hover:text-purple-900 dark:hover:text-purple-300 transition-all">Export to PDF</Button>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Button variant="ghost" onClick={() => setDateFilter({ from: "", to: "" })} className="rounded-lg px-4 py-2 border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all dark:text-gray-300 w-full sm:w-auto">Clear</Button>
+              <Button onClick={addRow} variant="outline" className="rounded-lg px-4 py-2 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all dark:text-gray-300 w-full sm:w-auto">Add Row</Button>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Button onClick={exportCSV} variant="secondary" className="rounded-lg px-4 py-2 border border-blue-200 dark:border-blue-600 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 hover:text-blue-900 dark:hover:text-blue-300 transition-all w-full sm:w-auto">Export to CSV</Button>
+              <Button onClick={exportPDF} variant="secondary" className="rounded-lg px-4 py-2 border border-purple-200 dark:border-purple-600 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 hover:bg-purple-100 dark:hover:bg-purple-900/50 hover:text-purple-900 dark:hover:text-purple-300 transition-all w-full sm:w-auto">Export to PDF</Button>
+            </div>
           </div>
           <div className="overflow-x-auto" ref={tableRef}>
             <Table className="min-w-full text-sm text-gray-800 dark:text-gray-200">
