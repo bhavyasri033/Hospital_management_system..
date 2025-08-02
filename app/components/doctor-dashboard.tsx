@@ -257,7 +257,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
       </Card>
 
       {/* Enhanced Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {summaryData.map((item, index) => (
           <AnimatedCard
             key={index}
@@ -273,7 +273,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         {/* Enhanced Today's Appointments */}
         <Card className="lg:col-span-2 border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
           <CardHeader className="bg-gradient-to-r from-blue-50 to-cyan-50 border-b dark:from-blue-900/50 dark:to-cyan-900/50 dark:border-gray-700">
@@ -288,17 +288,17 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                 <div
                   key={appointment.id}
                   className={cn(
-                    "flex items-center justify-between p-4 border-b last:border-b-0 border-l-4 card-hover stagger-item",
+                    "flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border-b last:border-b-0 border-l-4 card-hover stagger-item",
                     getPriorityColor(appointment.priority),
                   )}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
-                  <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-4 mb-3 sm:mb-0">
                     <div className="flex flex-col items-center">
                       {getStatusIcon(appointment.status)}
                       <span className="text-xs text-gray-500 mt-1">{appointment.duration}</span>
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <p className="font-semibold text-gray-900 dark:text-white">{appointment.patient}</p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">{appointment.type}</p>
                       {appointment.priority === "high" && (
@@ -306,7 +306,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                       )}
                     </div>
                   </div>
-                  <div className="text-right">
+                  <div className="text-left sm:text-right">
                     <p className="font-bold text-gray-900 dark:text-white">{appointment.time}</p>
                     <Badge className={`${getStatusColor(appointment.status)} border text-xs`}>
                       {appointment.status}
@@ -327,79 +327,83 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-50 dark:bg-gray-700">
-                  <TableHead className="font-semibold dark:text-white">Patient</TableHead>
-                  <TableHead className="font-semibold dark:text-white">Test</TableHead>
-                  <TableHead className="font-semibold dark:text-white">Status</TableHead>
-                  <TableHead className="font-semibold dark:text-white">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {labResults.map((result) => (
-                  <TableRow key={result.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                    <TableCell>
-                      <div>
-                        <div className="font-medium text-gray-900 dark:text-white">{result.patient}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">{result.date}</div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm text-gray-700 dark:text-gray-300">{result.test}</div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={`${getStatusColor(result.status)} border text-xs`}>{result.status}</Badge>
-                      {result.priority === "high" && (
-                        <Badge className="bg-red-100 text-red-800 text-xs ml-1 dark:bg-red-900 dark:text-red-300">Urgent</Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {result.status === "completed" && (
-                        <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="ghost" size="sm" onClick={() => setSelectedLabResult(result)}>
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="max-w-2xl">
-                            <DialogHeader>
-                              <DialogTitle className="flex items-center gap-2">
-                                <FileText className="h-5 w-5 text-blue-600" />
-                                Lab Results - {result.patient}
-                              </DialogTitle>
-                            </DialogHeader>
-                            <div className="space-y-6">
-                              <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-4 rounded-lg dark:from-blue-900/50 dark:to-cyan-900/50">
-                                <h4 className="font-semibold text-blue-900 dark:text-blue-100">{result.test}</h4>
-                                <p className="text-sm text-blue-700 dark:text-blue-300">Date: {result.date}</p>
-                              </div>
-                              {result.results && (
-                                <div className="grid grid-cols-2 gap-4">
-                                  {Object.entries(result.results).map(([key, value]) => (
-                                    <div key={key} className="bg-white p-3 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                                      <div className="text-sm font-medium text-gray-500 capitalize dark:text-gray-400">
-                                        {key.replace(/([A-Z])/g, " $1")}
-                                      </div>
-                                      <div className="text-lg font-bold text-gray-900 dark:text-white">{value}</div>
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          </DialogContent>
-                        </Dialog>
-                      )}
-                    </TableCell>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50 dark:bg-gray-700">
+                    <TableHead className="font-semibold dark:text-white text-xs sm:text-sm">Patient</TableHead>
+                    <TableHead className="font-semibold dark:text-white text-xs sm:text-sm">Test</TableHead>
+                    <TableHead className="font-semibold dark:text-white text-xs sm:text-sm">Status</TableHead>
+                    <TableHead className="font-semibold dark:text-white text-xs sm:text-sm">Action</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {labResults.map((result) => (
+                    <TableRow key={result.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                      <TableCell>
+                        <div>
+                          <div className="font-medium text-gray-900 dark:text-white text-xs sm:text-sm">{result.patient}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{result.date}</div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">{result.test}</div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-col gap-1">
+                          <Badge className={`${getStatusColor(result.status)} border text-xs`}>{result.status}</Badge>
+                          {result.priority === "high" && (
+                            <Badge className="bg-red-100 text-red-800 text-xs dark:bg-red-900 dark:text-red-300">Urgent</Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {result.status === "completed" && (
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="ghost" size="sm" onClick={() => setSelectedLabResult(result)}>
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                              <DialogHeader>
+                                <DialogTitle className="flex items-center gap-2">
+                                  <FileText className="h-5 w-5 text-blue-600" />
+                                  Lab Results - {result.patient}
+                                </DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-6">
+                                <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-4 rounded-lg dark:from-blue-900/50 dark:to-cyan-900/50">
+                                  <h4 className="font-semibold text-blue-900 dark:text-blue-100">{result.test}</h4>
+                                  <p className="text-sm text-blue-700 dark:text-blue-300">Date: {result.date}</p>
+                                </div>
+                                {result.results && (
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    {Object.entries(result.results).map(([key, value]) => (
+                                      <div key={key} className="bg-white p-3 rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                                        <div className="text-sm font-medium text-gray-500 capitalize dark:text-gray-400">
+                                          {key.replace(/([A-Z])/g, " $1")}
+                                        </div>
+                                        <div className="text-lg font-bold text-gray-900 dark:text-white">{value}</div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
         {/* Enhanced Patient Satisfaction Trend */}
         <Card className="border-0 shadow-lg dark:bg-gray-800 dark:border-gray-700">
           <CardHeader className="bg-gradient-to-r from-green-50 to-emerald-50 border-b dark:from-green-900/50 dark:to-emerald-900/50 dark:border-gray-700">
@@ -413,7 +417,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
               config={{
                 satisfaction: { label: "Satisfaction", color: "#10b981" },
               }}
-              className="h-[300px]"
+              className="h-[250px] sm:h-[300px]"
             >
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={satisfactionData}>
@@ -455,7 +459,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                 checkup: { label: "Check-up", color: "#f59e0b" },
                 emergency: { label: "Emergency", color: "#ef4444" },
               }}
-              className="h-[300px]"
+              className="h-[250px] sm:h-[300px]"
             >
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -463,9 +467,9 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
                     data={appointmentTypesData}
                     cx="50%"
                     cy="50%"
-                    outerRadius={80}
+                    outerRadius={60}
                     dataKey="value"
-                    label={({ name, percent }: { name: string; percent: number }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                    label={({ name, percent }: { name?: string; percent?: number }) => `${name || ''} ${((percent ?? 0) * 100).toFixed(0)}%`}
                   >
                     {appointmentTypesData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -486,7 +490,7 @@ export default function DoctorDashboard({ user, onLogout }: DoctorDashboardProps
       <AnimatedSidebar currentPage={currentPage} onPageChange={setCurrentPage} userRole="doctor" />
       <div className="flex-1 flex flex-col overflow-hidden">
         <AnimatedTopNavbar user={user} onLogout={onLogout} />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-6 page-enter dark:bg-gray-900">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6 page-enter dark:bg-gray-900">
           {currentPage === "dashboard" && renderDashboard()}
           {currentPage === "patients" && <PatientsPage userRole="doctor" currentUser={user} />}
           {currentPage === "appointments" && <AppointmentsPage userRole="doctor" currentUser={user} />}

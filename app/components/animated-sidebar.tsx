@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
   LayoutDashboard,
   Users,
@@ -16,6 +17,7 @@ import {
   ChevronRight,
   Activity,
   Building2,
+  Menu,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -28,6 +30,7 @@ interface SidebarProps {
 export default function AnimatedSidebar({ currentPage, onPageChange, userRole }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const autoCollapseTimerRef = useRef<NodeJS.Timeout | null>(null)
   const hoverTimerRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -37,13 +40,24 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
   const HOVER_EXPAND_DELAY = 300
 
   useEffect(() => {
-    // Start auto-collapse timer when component mounts
-    startAutoCollapseTimer()
+    // Check if mobile on mount and resize
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    // Start auto-collapse timer when component mounts (desktop only)
+    if (!isMobile) {
+      startAutoCollapseTimer()
+    }
 
     return () => {
       clearTimers()
+      window.removeEventListener('resize', checkMobile)
     }
-  }, [])
+  }, [isMobile])
 
   const clearTimers = () => {
     if (autoCollapseTimerRef.current) {
@@ -55,6 +69,7 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
   }
 
   const startAutoCollapseTimer = () => {
+    if (isMobile) return
     clearTimers()
     autoCollapseTimerRef.current = setTimeout(() => {
       if (!isHovered) {
@@ -64,6 +79,7 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
   }
 
   const handleMouseEnter = () => {
+    if (isMobile) return
     setIsHovered(true)
     clearTimers()
     
@@ -74,6 +90,7 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
   }
 
   const handleMouseLeave = () => {
+    if (isMobile) return
     setIsHovered(false)
     clearTimers()
     
@@ -85,7 +102,16 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
 
   const handleManualToggle = () => {
     setIsCollapsed(!isCollapsed)
-    startAutoCollapseTimer()
+    if (!isMobile) {
+      startAutoCollapseTimer()
+    }
+  }
+
+  const handlePageChange = (page: string) => {
+    onPageChange(page)
+    if (!isMobile) {
+      startAutoCollapseTimer()
+    }
   }
 
   const menuItems = [
@@ -153,15 +179,8 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
     }
   }
 
-  return (
-    <div
-      className={cn(
-        "bg-white border-r border-gray-200 shadow-lg transition-all duration-300 ease-in-out flex flex-col dark:bg-gray-900 dark:border-gray-700 relative",
-        isCollapsed ? "w-16" : "w-64",
-      )}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+  const renderSidebarContent = () => (
+    <div className="flex flex-col h-full">
       {/* Header */}
       <div className="p-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
@@ -178,9 +197,11 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
               </div>
             </div>
           )}
-          <Button variant="ghost" size="sm" onClick={handleManualToggle} className="btn-animate p-2">
-            {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          </Button>
+          {!isMobile && (
+            <Button variant="ghost" size="sm" onClick={handleManualToggle} className="btn-animate p-2">
+              {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -210,10 +231,7 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
                 isCollapsed ? "px-2" : "px-4",
               )}
               style={{ animationDelay: `${index * 0.1}s` }}
-              onClick={() => {
-                onPageChange(item.id)
-                startAutoCollapseTimer()
-              }}
+              onClick={() => handlePageChange(item.id)}
             >
               <Icon className={cn("h-5 w-5 icon-hover", isCollapsed ? "mx-auto" : "mr-3")} />
               {!isCollapsed && (
@@ -244,6 +262,36 @@ export default function AnimatedSidebar({ currentPage, onPageChange, userRole }:
           </div>
         )}
       </div>
+    </div>
+  )
+
+  // Mobile: Return Sheet (drawer)
+  if (isMobile) {
+    return (
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="sm" className="md:hidden p-2">
+            <Menu className="h-5 w-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-64 p-0">
+          {renderSidebarContent()}
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
+  // Desktop: Return regular sidebar
+  return (
+    <div
+      className={cn(
+        "bg-white border-r border-gray-200 shadow-lg transition-all duration-300 ease-in-out flex flex-col dark:bg-gray-900 dark:border-gray-700 relative hidden md:flex",
+        isCollapsed ? "w-16" : "w-64",
+      )}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {renderSidebarContent()}
     </div>
   )
 }

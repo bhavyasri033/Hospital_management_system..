@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ChevronDown, Settings, LogOut, User } from "lucide-react"
+import { ChevronDown, User, Settings, LogOut, Bell, Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import ProfileSettings from "./profile-settings"
 import SystemSettings from "./system-settings"
@@ -61,9 +61,9 @@ export default function AnimatedTopNavbar({ user, onLogout }: AnimatedTopNavbarP
   const getRoleIcon = (role: string) => {
     switch (role) {
       case "admin":
-        return "👨‍💼"
+        return "🛡️"
       case "doctor":
-        return "👩‍⚕️"
+        return "👨‍⚕️"
       case "pharma":
         return "💊"
       default:
@@ -73,22 +73,50 @@ export default function AnimatedTopNavbar({ user, onLogout }: AnimatedTopNavbarP
 
   return (
     <>
-      <header className="bg-white border-b border-gray-200 shadow-sm animate-slide-down dark:bg-gray-900 dark:border-gray-700">
-        <div className="flex items-center justify-between px-6 py-4">
-          {/* Left Section */}
-          <div className="flex items-center space-x-4">
-            <div className="animate-fade-in">
-              <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Hospital Management System</h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Welcome back, {user.name}</p>
+      <header className="bg-white border-b border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Left Section - Mobile Menu Button */}
+          <div className="flex items-center space-x-3">
+            {/* Mobile menu button will be handled by sidebar */}
+            <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-lg flex items-center justify-center">
+                  <span className="text-white text-sm font-bold">H</span>
+                </div>
+                <div className="hidden sm:block">
+                  <h1 className="text-lg font-bold text-gray-900 dark:text-white">HMS</h1>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Hospital Management</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Center Section - Search (hidden on mobile) */}
+          <div className="hidden md:flex flex-1 max-w-md mx-8">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search patients, doctors, appointments..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder:text-gray-400"
+              />
             </div>
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
+            {/* Notifications - Mobile optimized */}
+            <Button variant="ghost" size="sm" className="btn-animate p-2 relative">
+              <Bell className="h-5 w-5" />
+              <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+                3
+              </span>
+            </Button>
+
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="btn-animate flex items-center space-x-2 px-3 hover:bg-gray-50">
+                <Button variant="ghost" className="btn-animate flex items-center space-x-2 px-2 sm:px-3 hover:bg-gray-50">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src="/placeholder-user.jpg" alt={user.name} />
                     <AvatarFallback className="bg-gradient-to-br from-blue-100 to-cyan-100 text-blue-600 font-semibold">
@@ -99,14 +127,14 @@ export default function AnimatedTopNavbar({ user, onLogout }: AnimatedTopNavbarP
                         .toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="hidden md:block text-left">
+                  <div className="hidden sm:block text-left">
                     <p className="text-sm font-medium text-gray-900 dark:text-white">{user.name}</p>
                     <p className={cn("text-xs capitalize flex items-center gap-1", getRoleColor(user.role))}>
                       <span>{getRoleIcon(user.role)}</span>
                       {getRoleDisplayName(user.role)}
                     </p>
                   </div>
-                  <ChevronDown className="h-4 w-4 text-gray-500" />
+                  <ChevronDown className="h-4 w-4 text-gray-500 hidden sm:block" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-64 modal-content dark:bg-gray-800 dark:border-gray-700">
